@@ -4,6 +4,7 @@ RUN sed -i 's/archive.ubuntu.com/mirror.aarnet.edu.au\/pub\/ubuntu\/archive/g' /
 
 RUN rm -rf /var/lib/apt/lists/*
 RUN apt-get -y update && apt-get install -y libmicrohttpd-dev \
+    apt-utils \
     libjansson-dev \
     libnice-dev \
     libssl-dev \
@@ -24,6 +25,7 @@ RUN apt-get -y update && apt-get install -y libmicrohttpd-dev \
     cmake \
     unzip \
     zip \
+    npm \
     lsof wget vim sudo rsync cron mysql-client openssh-server supervisor locate
 
 
@@ -216,8 +218,7 @@ RUN cd / && git clone https://github.com/meetecho/janus-gateway.git && \
     cd janus-gateway && \
     sh autogen.sh && cd /janus-gateway && \
     git checkout origin/master && \
-    ./configure --enable-post-processing --enable-boringssl --disable-data-channels --disable-rabbitmq --disable-mqtt  --disable-plugin-echotest --disable-unix-sockets --enable-dtls-settimeout \
-    --disable-plugin-recordplay --disable-plugin-sip --disable-plugin-videocall --disable-plugin-voicemail --disable-plugin-textroom && \
+    ./configure --enable-post-processing --enable-boringssl  --disable-rabbitmq --disable-mqtt  --disable-plugin-echotest  --enable-dtls-settimeout  && \
     make && make install && make configs
 
 
