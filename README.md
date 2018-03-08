@@ -34,7 +34,7 @@ Transports:
     WebSockets:            yes (new API)
     RabbitMQ:              no
     MQTT:                  no
-    Unix Sockets:          no
+    Unix Sockets:          yes
 Plugins:
     Echo Test:             yes
     Streaming:             yes
