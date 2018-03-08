@@ -36,15 +36,15 @@ Transports:
     MQTT:                  no
     Unix Sockets:          no
 Plugins:
-    Echo Test:             no
+    Echo Test:             yes
     Streaming:             yes
-    Video Call:            no
-    SIP Gateway:           no
+    Video Call:            yes
+    SIP Gateway:           yes
     Audio Bridge:          yes
     Video Room:            yes
-    Voice Mail:            no
-    Record&Play:           no
-    Text Room:             no
+    Voice Mail:            yes
+    Record&Play:           yes
+    Text Room:             yes
 Event handlers:
     Sample event handler:  no
 ```
