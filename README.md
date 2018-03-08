@@ -25,7 +25,7 @@ This is a docker dev image for Janus Webrtc Gateway, it is based on https://gith
 libsrtp version:           2.0.x
 SSL/crypto library:        BoringSSL
 DTLS set-timeout:          yes
-DataChannels support:      no
+DataChannels support:      yes
 Recordings post-processor: yes
 TURN REST API client:      no
 Doxygen documentation:     no
