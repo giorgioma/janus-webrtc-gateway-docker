@@ -52,7 +52,7 @@ Event handlers:
 # Setup
 ```
 docker build --no-cache -t giorgioma/janus-gateway-docker .
-docker run --rm  --name="janus" -dt -P -p 80:80 -p 443:443 -p 8088:8088 -p 8004:8004/udp -p 8004:8004 -p 8089:8089 -p 8188:8188 -t giorgioma/janus-gateway-docker /bin/bash
+docker run --rm  --name="janus" -idt -p 80:80 -p 443:443 -p 8088:8088 -p 8004:8004/udp -p 8004:8004 -p 8089:8089 -p 8188:8188 -t giorgioma/janus-gateway-docker
 docker exec -it /bin/bash janus
 ```
 You should read the official doc https://janus.conf.meetecho.com/index.html carefully.
@@ -83,69 +83,3 @@ var register = { "request" : "rtp_forward", "publisher_id": 3881836128186438, "r
 sfutest.send({"message": register});
 ```
 
-
-# nginx.conf
-```
-server_names_hash_bucket_size 64;
-
-server {
-    listen 443 ssl;
-    server_name temp;
-
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_prefer_server_ciphers on;
-    ssl_ciphers "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED";
-
-    add_header Strict-Transport-Security "max-age=31536000";
-
-    ssl_certificate /usr/local/nginx/server.crt;
-    ssl_certificate_key /usr/local/nginx/server.key;
-
-    access_log  /app/log/nginx_access.log  ;
-    error_log  /app/log/nginx_error.log  debug;
-
-    location /janus {
-         proxy_set_header X-Real-IP $remote_addr;
-         proxy_set_header Host $host;
-         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-         proxy_set_header X-Forwarded-Proto $scheme;
-         proxy_http_version 1.1;
-         proxy_set_header Upgrade $http_upgrade;
-         proxy_set_header Connection "upgrade";
-         proxy_set_header Host $host;
-         proxy_redirect off;
-
-         proxy_pass http://127.0.0.1:8188;
-     }
-
-     location /janus_http {
-     proxy_pass http://127.0.0.1:8078;
-     }
-
-    location /janus_admin {
-         proxy_set_header X-Real-IP $remote_addr;
-         proxy_set_header Host $host;
-         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-         proxy_http_version 1.1;
-         proxy_set_header Upgrade $http_upgrade;
-         proxy_set_header Connection "upgrade";
-         proxy_set_header Host $host;
-         proxy_pass http://127.0.0.1:7188;
-    }
-
-    location /janus_admin_http {
-     proxy_pass http://127.0.0.1:7088;
-     }
-
-    location /hls {
-         types {
-             application/vnd.apple.mpegurl m3u8;
-             video/mp2t ts;
-         }
-         root /tmp;
-         add_header Cache-Control no-cache;
-     }
-
-}
-
-```

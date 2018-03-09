@@ -252,3 +252,10 @@ RUN OPENRESTY="1.11.2.3" && ZLIB="zlib-1.2.11" && PCRE="pcre-8.41" &&  openresty
     cd openresty-$OPENRESTY && \
     nginx_build=/root/nginx && \
     ./configure --sbin-path=/usr/local/nginx/nginx --conf-path=/usr/local/nginx/nginx.conf  --pid-path=/usr/local/nginx/nginx.pid --with-pcre-jit --with-ipv6 --with-pcre=$nginx_build/$PCRE --with-zlib=$nginx_build/$ZLIB --with-http_ssl_module --with-stream --with-mail=dynamic --add-module=$nginx_build/nginx-rtmp-module && make && make install && mv /usr/local/nginx/nginx /usr/local/bin
+
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /usr/local/nginx/server.key -out /usr/local/nginx/server.crt \
+    -subj "/C=IT/ST=Milan/L=Milan/O=Giorgio/OU=GiorgioDev/CN=example.com"
+
+COPY nginx.conf /usr/local/nginx/host.conf
+
+RUN sed -i.bak '/[[:space:]].#gzip/ a include host.conf;' /usr/local/nginx/nginx.conf 

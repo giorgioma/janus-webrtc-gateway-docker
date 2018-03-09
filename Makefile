@@ -1,4 +1,4 @@
-TEMPLATE_NAME ?= janus-webrtc-gateway-docker
+TEMPLATE_NAME ?= janus-gateway-docker
 
 image:
 	@docker build -t giorgioma/$(TEMPLATE_NAME) .
